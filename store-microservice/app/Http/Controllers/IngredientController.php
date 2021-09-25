@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ingredient;
-use App\Purchase;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\DB;
     
 class IngredientController extends Controller
 {
@@ -37,10 +36,9 @@ class IngredientController extends Controller
 
         Ingredient::where('name', '=', $name_ingredient)->increment('quantity', $quantity_sold);
 
-        $created = new \MongoDB\BSON\UTCDateTime(new \DateTime("now"));
-        Purchase::insert(['ingredient' => $name_ingredient, 'quantity' => $quantity_sold, 'created' => $created]);
+        $purchase = Purchase::create(['ingredient' => $name_ingredient, 'quantity' => $quantity_sold]);
         
-        return response()->json(['message'=> "se compraron " . $quantity_sold . " unidades de ". $name_ingredient], 201);
+        return response()->json($purchase, 201);
 
     }
 

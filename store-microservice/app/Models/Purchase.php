@@ -12,10 +12,9 @@ class Purchase extends Eloquent
 	protected $collection = 'purchases';
 
 
-	protected $fillable = array('ingredient','quantity', 'created');
+	protected $fillable = array('ingredient','quantity');
 
-	protected $hidden = ['_id'];
+	protected $hidden = ['_id', 'updated_at'];
 
-	protected $dates = ['created',];
 
 }
