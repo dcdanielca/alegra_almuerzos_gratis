@@ -19,6 +19,7 @@ Route::post('/orders', 'OrderController@create');
 Route::get('/orders/preparing', 'OrderController@orders_preparing');
 Route::get('/orders/made', 'OrderController@orders_made');
 Route::post('/orders/recipe', 'OrderController@choose_recipe');
+Route::post('/orders/ingredients', 'OrderController@ingredients_order');
 Route::post('/orders/prepare', 'OrderController@prepare_order');
 
 

@@ -33,7 +33,7 @@ class IngredientController extends Controller
         if($quantity_sold == 0){
             return response()->json(['message'=> "no hay disponibilidad de " . $name_ingredient], 400);
         }
-
+        
         Ingredient::where('name', '=', $name_ingredient)->increment('quantity', $quantity_sold);
 
         $purchase = Purchase::create(['ingredient' => $name_ingredient, 'quantity' => $quantity_sold]);
@@ -50,14 +50,13 @@ class IngredientController extends Controller
      */
     public function request(Request $request)
     {
-        
-        $ingredients_request =  $request['ingredients'];
-        
         $ingredients_objects = [];
-        foreach ($ingredients_request as $ingredient_request) {
-            $ingredient = Ingredient::where('name', '=', $ingredient_request['name'])->firstOrFail();
+
+        foreach ($request['ingredients'] as $name => $quantity) {
+            $ingredient = Ingredient::where('name', '=', $name)->firstOrFail();
             $quantity_actual = $ingredient->quantity;
-            $quantity_required =  $ingredient_request['quantity'];
+            $quantity_required =  $quantity;
+
             if ($quantity_actual - $quantity_required >= 0){
                 $ingredient->quantity -= $quantity_required;
                 array_push($ingredients_objects, $ingredient); 

@@ -14,7 +14,7 @@ class Recipe extends Eloquent
 
 
 	// Atributos que se pueden asignar de manera masiva.
-	protected $fillable = array('name', 'image', 'tomato', 'lemon', 'potato', 'rice', 'ketchup', 'lettuce', 'onion', 'cheese', 'meat', 'chicken');
+	protected $fillable = array('name', 'image', 'ingredients');
 
 	protected $hidden = ['_id', 'updated_at'];
 }

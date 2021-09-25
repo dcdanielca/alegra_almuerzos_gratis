@@ -12,9 +12,6 @@ class Order extends Eloquent
 	protected $collection = 'orders';
 
 
-	protected $fillable = array('recipeId', 'recipeName', 'status', 'created');
-
-
-	protected $dates = ['created',];
+	protected $fillable = array('recipeId', 'recipeName', 'status', 'ingredients');
 
 }

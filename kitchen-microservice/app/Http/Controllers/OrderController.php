@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -30,7 +31,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        $order = Order::create(['status' => 'preparing', 'recipe' => NULL]);
+        $order = Order::create(['status' => 'preparing', 'recipeId' => NULL, 'recipeName' => NULL, 'ingredients' => FALSE]);
         return response()->json($order, 201);
     }
 
@@ -42,7 +43,7 @@ class OrderController extends Controller
      */
     public function choose_recipe(Request $request)
     {
-        $order = Order::findOrFail($request['id']);
+        $order = Order::where('_id', '=', $request['id'])->whereNull('recipeId')->firstOrFail();
         $recipe = Recipe::findOrFail($request['recipeId']);
         $order->recipeId = $recipe['_id'];
         $order->recipeName = $recipe['name'];
@@ -50,14 +51,36 @@ class OrderController extends Controller
         return response()->json($order, 201);
     }
 
-        /**
-     * Choose recipe to order
+
+    /**
+     * Get ingredients order
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ingredients_order(Request $request)
+    {
+        $order = Order::where('_id', '=', $request['id'])->whereNotNull('recipeId')->where('ingredients', FALSE)->firstOrFail();
+        $recipe = Recipe::findOrFail($order->recipeId);
+        
+        $response = Http::post('http://' . config('store.store_host') . ':' . config('store.store_port') . '/ingredients/request', ['ingredients' => $recipe->ingredients]);
+        
+        if($response->failed()){
+            return response()->json(['message' => 'no hay ingredientes para la preparación'], 400);
+        }elseif($response->successful()){
+            $order->ingredients = TRUE;
+            $order->save();
+            return response()->json($order, 201);
+        }
+    }
+
+    /**
+     * Prepare order
      *
      * @return \Illuminate\Http\Response
      */
     public function prepare_order(Request $request)
     {
-        $order = Order::findOrFail($request['id']);
+        $order = Order::where('_id', '=', $request['id'])->where('ingredients', TRUE)->firstOrFail();
         $order->status = "made";
         $order->save();
         return response()->json($order, 201);
