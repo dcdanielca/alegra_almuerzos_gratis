@@ -13,7 +13,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return response()->json(['purchases'=>Purchase::paginate(50)], 200);
+        return response()->json(['purchases'=>Purchase::orderBy('created_at', 'desc')->get()], 200);
     }
 
 }
