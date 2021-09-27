@@ -10,7 +10,7 @@ function Store(){
     const getIngredients = function(){
         let mounted = true;
 
-        fetch('http://127.0.0.1:8001/ingredients')
+        fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8001/ingredients')
         .then(res => res.json())
         .then(data => {
             if(mounted){
@@ -24,7 +24,7 @@ function Store(){
     const getPurchases = function(){
         let mounted = true;
 
-        fetch('http://127.0.0.1:8001/purchases')
+        fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8001/purchases')
         .then(res => res.json())
         .then(data => {
             if(mounted){
@@ -40,7 +40,7 @@ function Store(){
         
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        fetch('http://127.0.0.1:8001/ingredients/purchase', {
+        fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8001/ingredients/purchase', {
             method: 'POST',
             body: JSON.stringify({
                 "ingredient": ingredientBuy,

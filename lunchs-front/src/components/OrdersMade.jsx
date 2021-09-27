@@ -9,7 +9,7 @@ function OrdersMade(){
     useEffect(()=>{
         let mounted = true;
 
-        fetch('http://127.0.0.1:8000/orders/made')
+        fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8000/orders/made')
         .then(res => res.json())
         .then(data => {
             if(mounted){

@@ -9,7 +9,7 @@ function DetailOrderKitchen(props) {
 
     const setRecipe = function(){
         let recipe = props.recipes[Math.floor(Math.random() * props.recipes.length)];
-        fetch('http://127.0.0.1:8000/orders/recipe', {
+        fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8000/orders/recipe', {
             method: 'POST',
             body: JSON.stringify({
                 "id": props.order._id,
@@ -26,7 +26,7 @@ function DetailOrderKitchen(props) {
     }
 
     const requestIngredients = function(){
-        fetch('http://127.0.0.1:8000/orders/ingredients', {
+        fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8000/orders/ingredients', {
             method: 'POST',
             body: JSON.stringify({
                 "id": props.order._id,
@@ -48,7 +48,7 @@ function DetailOrderKitchen(props) {
 
 
     const prepareOrder = function(){
-        fetch('http://127.0.0.1:8000/orders/prepare', {
+        fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8000/orders/prepare', {
             method: 'POST',
             body: JSON.stringify({
                 "id": props.order._id,
