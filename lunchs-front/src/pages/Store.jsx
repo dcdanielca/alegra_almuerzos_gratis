@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import Modal from '../components/Modal';
+import DetailsContainer from "../components/DetailsContainer";
 
 function Store(){
 
     const [ingredients, setIngredients] = useState([]);
     const [ingredientBuy, setIngredientBuy] = useState("");
-    const [messageModal, setModalMessage] = useState("");
     const [purchases, setPurchases] = useState([]);
 
     const getIngredients = function(){
@@ -34,6 +33,10 @@ function Store(){
         })
         return () => mounted = false;
     }
+
+    const changeIngredientBuy = function(e){
+        setIngredientBuy(e.target.value);
+    }
         
     const handleSubmit = (evt) => {
         evt.preventDefault();
@@ -51,19 +54,9 @@ function Store(){
             if ('quantity' in data){
                 getIngredients()
                 getPurchases()
-                setModalMessage(`Sold ${data['quantity']} units of ${data['ingredient']}`)
-                const modal = document.querySelector('.modal')
-                modal.classList.toggle('opacity-0')
-                setTimeout(function(){ 
-                    modal.classList.add('opacity-0')
-                }, 2000);
+                alert(`Sold ${data['quantity']} units of ${data['ingredient']}`)
             }else{
-                setModalMessage(`No units available for sale`)
-                const modal = document.querySelector('.modal')
-                modal.classList.toggle('opacity-0')
-                setTimeout(function(){ 
-                    modal.classList.add('opacity-0')
-                }, 2000);
+                alert("No units available for sale")
             }
         });
     }
@@ -94,31 +87,17 @@ function Store(){
                             ingredients.map(ingredient => {
                                     return(
                                         <label key={ingredient.name} className="grid grid-cols-12 mb-2 items-center capitalize">
-                                            <input className="w-5 h-5 flex justify-center rounded-full" name="size" type="radio" value={ingredient.name} onChange={e => setIngredientBuy(e.target.value)}/>
+                                            <input className="w-5 h-5 flex justify-center rounded-full" name="size" type="radio" value={ingredient.name} onChange={changeIngredientBuy}/>
                                             {ingredient.name}
                                         </label>
                                     )
                                 })
                         }
-                        <input className="mt-5 mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 roundedfont-bold text-center" type="submit" value="Buy!"/>
+                        <input className="mt-5 mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 roundedfont-bold text-center cursor-pointer" type="submit" value="Buy!"/>
                     </form>
-                    <Modal message={messageModal}/>
                 </div>
             </section>
-            <section>
-                <h2 className="mt-10 text-3xl font-bold text-blue-900 mb-5 text-center">Purchases of Ingredients</h2>
-                {
-                    purchases.map(purchase => {
-                        return (
-                            <div key={purchase.created_at} className="shadow-inner shadow-sm hover:shadow-md p-8">
-                                <p className="text-xl mb-5 capitalize"><strong className="font-bold ">Ingredient:</strong> {purchase.ingredient}</p>
-                                <p><strong className="font-bold mb-5">Quantity:</strong> {purchase.quantity}</p>
-                                <p><strong className="font-bold mb-5">Date:</strong> {new Date(purchase.created_at).toString()}</p>
-                            </div>
-                        )
-                    })
-                }
-            </section>
+            <DetailsContainer title="Purchases of Ingredients" elements={purchases} itemDetailTitle="Purchase"/>
             
         </div>
     )

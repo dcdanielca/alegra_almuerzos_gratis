@@ -14,7 +14,7 @@ class Purchase extends Eloquent
 
 	protected $fillable = array('ingredient','quantity');
 
-	protected $hidden = ['_id', 'updated_at'];
+	protected $hidden = ['updated_at'];
 
 
 }

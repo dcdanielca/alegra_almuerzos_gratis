@@ -23,7 +23,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . $APP_DIR
 
 RUN cd $APP_DIR && composer install
-CMD php artisan db:seed
 
 WORKDIR $APP_DIR
 CMD php artisan serve --host 0.0.0.0
