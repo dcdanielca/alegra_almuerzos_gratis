@@ -61,7 +61,7 @@ function DetailOrderKitchen({order, recipes}) {
         .then(data => {
             setRender(false)
             alert("Order made")
-            location.reload();
+            window.location.reload();
         });
     }
 
