@@ -1,14 +1,14 @@
 import Detail from "./Detail";
 
-function DetailsContainer(props) {
+function DetailsContainer({title, elements, itemDetailTitle}) {
 
     return (
         <section>
-                <h2 className="text-4xl font-bold text-blue-900 text-center my-10">{props.title}</h2>
+                <h2 className="text-4xl font-bold text-blue-900 text-center my-10">{title}</h2>
                 {
-                    props.elements.map(element => {
-                        return (
-                            <Detail element={element} key={element.created_at} mainKey={props.itemDetailTitle}/>
+                    elements.map(element => {
+                        return (    
+                            <Detail element={element} key={element.created_at} mainKey={itemDetailTitle}/>
                         )
                     })
                 }

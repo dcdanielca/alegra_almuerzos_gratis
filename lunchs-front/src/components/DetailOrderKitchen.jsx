@@ -1,18 +1,18 @@
 import { useState } from "react/cjs/react.development";
 
 
-function DetailOrderKitchen(props) {
+function DetailOrderKitchen({order, recipes}) {
     
     const [render, setRender] = useState(true);
-    const [recipeAssigned, setRecipeAssigned] = useState(props.order.recipeName);
-    const [ingredients, setIngredients] = useState(props.order.ingredients);
+    const [recipeAssigned, setRecipeAssigned] = useState(order.recipeName);
+    const [ingredients, setIngredients] = useState(order.ingredients);
 
     const setRecipe = function(){
-        let recipe = props.recipes[Math.floor(Math.random() * props.recipes.length)];
+        let recipe = recipes[Math.floor(Math.random() * recipes.length)];
         fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8000/orders/recipe', {
             method: 'POST',
             body: JSON.stringify({
-                "id": props.order._id,
+                "id": order._id,
                 "recipeId": recipe._id
             }),
             headers: {
@@ -29,7 +29,7 @@ function DetailOrderKitchen(props) {
         fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8000/orders/ingredients', {
             method: 'POST',
             body: JSON.stringify({
-                "id": props.order._id,
+                "id": order._id,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -51,7 +51,7 @@ function DetailOrderKitchen(props) {
         fetch('http://ec2-3-83-226-58.compute-1.amazonaws.com:8000/orders/prepare', {
             method: 'POST',
             body: JSON.stringify({
-                "id": props.order._id,
+                "id": order._id,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -61,6 +61,7 @@ function DetailOrderKitchen(props) {
         .then(data => {
             setRender(false)
             alert("Order made")
+            location.reload();
         });
     }
 
@@ -68,9 +69,9 @@ function DetailOrderKitchen(props) {
         render && 
         <section>
             <div className="shadow-inner shadow-sm hover:shadow-md p-8">
-                <p className="text-2xl mb-5"><strong className="font-bold capitalize">Order:</strong> {props.order._id}</p>
+                <p className="text-2xl mb-5"><strong className="font-bold capitalize">Order:</strong> {order._id}</p>
                 <p className="mb-5"><strong className="font-bold mb-5 text-xl">Recipe:</strong> {recipeAssigned ? recipeAssigned : 'Unassigned'}</p>
-                <p><strong className="font-bold mb-5">Date:</strong> {new Date(props.order.created_at).toString()}</p>
+                <p><strong className="font-bold mb-5">Date:</strong> {new Date(order.created_at).toString()}</p>
                 <p><strong className="font-bold mb-5">Ingredients:</strong> {ingredients ? 'Assigned' : 'Unassigned'}</p>
                 {
                     !recipeAssigned &&
